@@ -1,12 +1,7 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:my_project_first/hide/providers/gallery_provider.dart';
 import 'package:my_project_first/model/image_model.dart';
 import 'package:my_project_first/routes.dart';
-import 'package:my_project_first/utils/colors.dart';
-import 'package:my_project_first/utils/utils.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
@@ -36,13 +31,15 @@ class PhotoGallerView extends StatelessWidget {
               itemCount: itemCount,
               builder: ((context, index) {
                 ImageModel img = images![index];
-                
+
                 return PhotoViewGalleryPageOptions(
                     onTapUp: (context, details, controllerValue) {
                       showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return  BottomSheetWidget(imageModell: img,);
+                          return BottomSheetWidget(
+                            imageModell: img,
+                          );
                         },
                       );
                     },

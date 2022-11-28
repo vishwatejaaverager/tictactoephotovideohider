@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:my_project_first/hide/providers/hide_location_provider.dart';
 import 'package:my_project_first/hide/providers/lock_screen_provider.dart';
 import 'package:my_project_first/preferences/preferences.dart';
@@ -10,7 +9,10 @@ import 'package:my_project_first/utils/colors.dart';
 import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../../routes.dart';
+
 class TictactoeScreen extends StatefulWidget {
+  static const id = Routes.ticTacToeScreen;
   const TictactoeScreen({super.key});
 
   @override
@@ -94,7 +96,7 @@ class _TictactoeScreenState extends State<TictactoeScreen> {
                   itemBuilder: ((context, index) {
                     return InkWell(
                       onTap: () {
-                        __.onTap(index, context,hideLocationProvider);
+                        __.onTap(index, context, hideLocationProvider);
                       },
                       child: Container(
                         margin: const EdgeInsets.all(8),

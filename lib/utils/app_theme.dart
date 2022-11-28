@@ -19,12 +19,10 @@ class ThemeProvider extends ChangeNotifier {
 class AppTheme {
   static final lightTheme = ThemeData(
     useMaterial3: true,
-    listTileTheme: ListTileThemeData(
-      textColor: blackColor
-    ) ,
-   iconTheme: const IconThemeData(color: blackColor),
+    listTileTheme: const ListTileThemeData(textColor: blackColor),
+    iconTheme: const IconThemeData(color: blackColor),
     scaffoldBackgroundColor: Colors.white,
-    primaryColor:whiteColor,
+    primaryColor: whiteColor,
     colorScheme: const ColorScheme.light(),
     backgroundColor: whiteColor,
     cardColor: blackColor,
@@ -34,11 +32,9 @@ class AppTheme {
   );
   static final darkTheme = ThemeData(
     useMaterial3: true,
-    listTileTheme: ListTileThemeData(
-      textColor: whiteColor
-    ),
+    listTileTheme: ListTileThemeData(textColor: whiteColor),
     scaffoldBackgroundColor: const Color(0xff232428),
-    iconTheme:  IconThemeData(color:whiteColor),
+    iconTheme: IconThemeData(color: whiteColor),
     colorScheme: const ColorScheme.dark(),
     primaryColor: const Color(0xff232428),
     backgroundColor: whiteColor,

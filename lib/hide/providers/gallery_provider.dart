@@ -108,7 +108,7 @@ class GalleryProvider with ChangeNotifier {
 
         _images = box.values.toList();
         log("added to hive db");
-        box.close();
+        //box.close();
 
         notifyListeners();
         clearMultipleImages();
@@ -125,7 +125,7 @@ class GalleryProvider with ChangeNotifier {
       //final imageBox = Hive.box<ImageModel>('pics');
       Box<ImageModel> box = await Hive.openBox<ImageModel>(pickHiveBox);
       _images = box.values.toList();
-      box.close();
+      //box.close();
 
       //log(_list.iterator.current.images.length.toString());
       log("ended");
@@ -139,7 +139,7 @@ class GalleryProvider with ChangeNotifier {
     Box<ImageModel> box = await Hive.openBox<ImageModel>(pickHiveBox);
     await box.deleteAt(img);
     _images = box.values.toList();
-    box.close();
+   // box.close();
     notifyListeners();
   }
 

@@ -9,7 +9,6 @@ import 'package:my_project_first/model/image_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:path/path.dart';
 
 class GalleryProvider with ChangeNotifier {
   //final List<XFile> _sharableImages = [];
@@ -139,7 +138,7 @@ class GalleryProvider with ChangeNotifier {
     Box<ImageModel> box = await Hive.openBox<ImageModel>(pickHiveBox);
     await box.deleteAt(img);
     _images = box.values.toList();
-   // box.close();
+    // box.close();
     notifyListeners();
   }
 

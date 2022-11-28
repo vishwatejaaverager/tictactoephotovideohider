@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_first/hide/providers/hide_location_provider.dart';
 import 'package:my_project_first/hide/providers/lock_screen_provider.dart';
 import 'package:my_project_first/routes.dart';
 import 'package:my_project_first/utils/colors.dart';

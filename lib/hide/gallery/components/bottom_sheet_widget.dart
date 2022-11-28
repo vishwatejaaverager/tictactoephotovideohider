@@ -4,6 +4,7 @@ import 'package:my_project_first/model/image_model.dart';
 import 'package:my_project_first/utils/dialog.dart';
 import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class BottomSheetWidget extends StatelessWidget {
   final ImageModel imageModell;
@@ -14,6 +15,7 @@ class BottomSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Consumer<GalleryProvider>(builder: ((_, __, ___) {
       return Container(
         height: size.height / 9,
@@ -24,13 +26,17 @@ class BottomSheetWidget extends StatelessWidget {
             InkWell(
                 onTap: () {
                   __.isSharing
-                   ? const Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : Provider.of<GalleryProvider>(context, listen: false)
                           .shareImage(imageModell.images);
-                     
                 },
                 child: const Icon(Icons.share)),
-            const Icon(Icons.favorite),
+            InkWell(
+                onTap: () {
+                  Toast.show('Will be implemented soon :)',
+                      duration: Toast.lengthLong, gravity: Toast.bottom);
+                },
+                child: const Icon(Icons.favorite)),
             InkWell(
                 onTap: () {
                   // Provider.of<GalleryProvider>(context, listen: false)
@@ -53,7 +59,10 @@ class BottomSheetWidget extends StatelessWidget {
                   });
                 },
                 child: const Icon(Icons.delete)),
-            const Icon(Icons.cloud)
+            InkWell(onTap: () {
+               Toast.show('Will be implemented soon :)',
+                      duration: Toast.lengthLong, gravity: Toast.bottom);
+            }, child: const Icon(Icons.cloud))
           ],
         ), // This line set the transparent background
       );

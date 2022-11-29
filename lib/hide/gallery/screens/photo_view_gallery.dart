@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_project_first/hide/providers/gallery_provider.dart';
-import 'package:my_project_first/model/image_model.dart';
 import 'package:my_project_first/routes.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -30,7 +31,7 @@ class PhotoGallerView extends StatelessWidget {
               },
               itemCount: itemCount,
               builder: ((context, index) {
-                ImageModel img = images![index];
+                File img = File(images![index]);
 
                 return PhotoViewGalleryPageOptions(
                     onTapUp: (context, details, controllerValue) {
@@ -43,7 +44,7 @@ class PhotoGallerView extends StatelessWidget {
                         },
                       );
                     },
-                    imageProvider: MemoryImage(img.images),
+                    imageProvider: FileImage(img),
                     minScale: PhotoViewComputedScale.contained,
                     maxScale: PhotoViewComputedScale.contained * 4);
               })),

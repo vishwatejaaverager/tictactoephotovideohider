@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_project_first/hide/providers/settings_provider.dart';
 import 'package:my_project_first/routes.dart';
 import 'package:my_project_first/utils/app_theme.dart';
-import 'package:my_project_first/utils/colors.dart';
 import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Consumer<SettingsProvider>(
       builder: (_, __, ___) {
         return SafeArea(
@@ -53,7 +53,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     padding: const EdgeInsets.all(16),
                     child: const Text(
                       'Settings',
-                      style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
                     ),
                   ),
                   const SettingHeadingTile(
@@ -62,7 +63,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     margin: const EdgeInsets.symmetric(horizontal: 16),
-                    
                     child: Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,7 +91,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     margin: const EdgeInsets.symmetric(horizontal: 16),
-                    
                     child: Column(
                       //mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +103,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             suffix: Switch(
                                 value: value.isDarkMode,
                                 onChanged: (v) {
-                                  
                                   value.toggle(v);
                                 }),
                           );

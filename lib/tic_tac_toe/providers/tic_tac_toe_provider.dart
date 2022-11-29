@@ -2,14 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_first/hide/gallery/screens/vault_screen.dart';
 import 'package:my_project_first/hide/lock_screen/screens/lock_screen.dart';
 import 'package:my_project_first/hide/providers/hide_location_provider.dart';
 import 'package:my_project_first/utils/dialog.dart';
-import 'package:provider/provider.dart';
 
 class TicTacToeProvider with ChangeNotifier {
-  
   final bool _isXturn = true;
   bool get isXturn => _isXturn;
 
@@ -25,24 +22,13 @@ class TicTacToeProvider with ChangeNotifier {
   //   ['0', '0', '0'],
   //   ['0', '0', '0']
   // ];
-  List _hideListTictac = [
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
-    '0',
-  ];
 
-  List get hideListTicTac => _hideListTictac;
+  // List get hideListTicTac => _hideListTictac;
 
-  setHideListTicTac(List a) {
-    _hideListTictac = a;
-    print(_hideListTictac);
-  }
+  // setHideListTicTac(List a) {
+  //   _hideListTictac = a;
+
+  // }
 
   final List _tictac = ['', '', '', '', '', '', '', '', ''];
   List get tictac => _tictac;
@@ -61,7 +47,8 @@ class TicTacToeProvider with ChangeNotifier {
   //   }
   // }
 
-  onTap(int index, BuildContext context,HideLocationProvider hideLocationProvider) {
+  onTap(int index, BuildContext context,
+      HideLocationProvider hideLocationProvider) {
     if (_isOturn && _tictac[index] == '') {
       _tictac[index] = 'O';
       _filledBoxes++;
@@ -75,12 +62,13 @@ class TicTacToeProvider with ChangeNotifier {
       log("called x ");
       notifyListeners();
     }
-    checkWinner(context,hideLocationProvider);
+    checkWinner(context, hideLocationProvider);
     // _isOturn = !_isOturn;
     log('${_isOturn}turn');
   }
 
-  void checkWinner(BuildContext context,HideLocationProvider hideLocationProvider) {
+  void checkWinner(
+      BuildContext context, HideLocationProvider hideLocationProvider) {
     // Checking rows
     if (_tictac[0] == _tictac[1] &&
         _tictac[0] == _tictac[2] &&
@@ -96,7 +84,6 @@ class TicTacToeProvider with ChangeNotifier {
         onLongPressed: () {
           log("pressesd");
           if (_tictac[0] == 'X') {
-
             if (hideLocationProvider.hideLocation2) {
               log("came");
               Navigator.pushNamedAndRemoveUntil(

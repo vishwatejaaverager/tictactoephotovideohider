@@ -1,8 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:my_project_first/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreference {
@@ -30,7 +27,6 @@ class UserPreference {
 
   static Future setSwitchOne(bool val) async {
     await preferences.setBool(_val1, val);
-   
   }
 
   static Future setSwitchTwo(bool val) async {

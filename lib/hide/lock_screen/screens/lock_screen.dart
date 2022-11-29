@@ -3,7 +3,6 @@ import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:my_project_first/hide/gallery/screens/vault_screen.dart';
 import 'package:my_project_first/hide/providers/lock_screen_provider.dart';
 import 'package:my_project_first/routes.dart';
-import 'package:my_project_first/tic_tac_toe/providers/tic_tac_toe_provider.dart';
 import 'package:provider/provider.dart';
 
 class LockScreen extends StatefulWidget {

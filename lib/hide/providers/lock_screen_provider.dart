@@ -10,7 +10,7 @@ class LockScreenProvider with ChangeNotifier {
 
   getLockPass() {
     _pass = preference.getLock() ?? '1234';
-    log(_pass + " this is from db");
+    log("$_pass this is from db");
   }
 
   setPasscode(String s) {

@@ -19,7 +19,7 @@ void main() async {
   Hive.registerAdapter(ImageModelAdapter());
   await UserPreference.init();
 
-  // await Hive.openBox<ImageModel>('pics');
+  //await Hive.openBox('image-box');
 
   runApp(DevicePreview(
       enabled: false,

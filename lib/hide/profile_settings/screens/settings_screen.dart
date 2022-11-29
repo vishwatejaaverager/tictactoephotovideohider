@@ -33,6 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Consumer<SettingsProvider>(
       builder: (_, __, ___) {
         return SafeArea(

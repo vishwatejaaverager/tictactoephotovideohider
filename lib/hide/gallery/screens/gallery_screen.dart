@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:my_project_first/hide/gallery/screens/photo_view_gallery.dart';
@@ -20,7 +21,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     galleryProvider = Provider.of<GalleryProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      galleryProvider.getImageshive();
+      //galleryProvider.getImageshive();
     });
 
     super.initState();
@@ -30,7 +31,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   void didChangeDependencies() {
     galleryProvider = Provider.of<GalleryProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      galleryProvider.getImageshive();
+      //galleryProvider.getImageshive();
       galleryProvider.blockScreenshots();
     });
     super.didChangeDependencies();
@@ -46,15 +47,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
-                    itemCount: __.images.length,
+                    itemCount: __.imagePaths.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             mainAxisSpacing: 4,
                             crossAxisSpacing: 4),
                     itemBuilder: (BuildContext context, int index) {
-                      if (__.images.isEmpty) {
-                        log(__.images[index].toString());
+                      File imag = File(__.imagePaths[index]);
+                      if (__.imagePaths.isEmpty) {
+                        log(__.imagePaths[index].toString());
                         return const Text("please do add images");
                       } else {
                         return InkWell(
@@ -65,14 +67,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
                                 MaterialPageRoute(
                                     builder: ((context) => PhotoGallerView(
                                           imageIndex: index,
-                                          images: __.images,
-                                          itemCount: __.images.length,
+                                          images: __.imagePaths,
+                                          itemCount: __.imagePaths.length,
                                         ))));
                           },
                           child: SizedBox(
                             height: 100,
-                            child: Image.memory(
-                              __.images[index].images,
+                            child: Image.file(
+                              imag,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -85,7 +87,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            galleryProvider.saveImagesInHiveDb();
+            galleryProvider.saveImagesInFiles();
           },
           child: const Icon(Icons.add_a_photo),
         ),

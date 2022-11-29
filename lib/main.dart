@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:my_project_first/app_routers.dart';
 import 'package:my_project_first/general_providers.dart';
-import 'package:my_project_first/model/image_model.dart';
+
 import 'package:my_project_first/on_boarding/screens/on_boarding_screen.dart';
 import 'package:my_project_first/preferences/preferences.dart';
 import 'package:my_project_first/tic_tac_toe/screens/tic_tac_toe_screen.dart';
@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(ImageModelAdapter());
+  
   await UserPreference.init();
 
   //await Hive.openBox('image-box');

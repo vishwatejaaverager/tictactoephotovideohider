@@ -18,8 +18,7 @@ void main() async {
   await Hive.initFlutter();
   
   await UserPreference.init();
-
-  //await Hive.openBox('image-box');
+  await Hive.openBox<String>('fav-path-box');
 
   runApp(DevicePreview(
       enabled: false,

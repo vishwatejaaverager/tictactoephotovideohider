@@ -31,7 +31,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   void didChangeDependencies() {
     galleryProvider = Provider.of<GalleryProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //galleryProvider.getImageshive();
+      galleryProvider.getImagesFromFile();
       galleryProvider.blockScreenshots();
     });
     super.didChangeDependencies();

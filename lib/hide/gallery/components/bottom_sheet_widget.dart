@@ -7,16 +7,20 @@ import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
+import '../../../boxes.dart';
+
 class BottomSheetWidget extends StatelessWidget {
-  final File imageModell;
+  final File imgFile;
   const BottomSheetWidget({
     Key? key,
-    required this.imageModell,
+    required this.imgFile,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final box = Boxes.getFavs;
     ToastContext().init(context);
+
     return Consumer<GalleryProvider>(builder: ((_, __, ___) {
       return Container(
         height: size.height / 9,
@@ -26,21 +30,24 @@ class BottomSheetWidget extends StatelessWidget {
           children: [
             InkWell(
                 onTap: () {
-                  // __.isSharing
-                  //     ? const Center(child: CircularProgressIndicator())
-                  //     : Provider.of<GalleryProvider>(context, listen: false)
+                  Provider.of<GalleryProvider>(context, listen: false)
+                      .shareImage(imgFile);
                   //         .shareImage();
                 },
                 child: const Icon(Icons.share)),
             InkWell(
                 onTap: () {
-                  Toast.show('Will be implemented soon :)',
-                      duration: Toast.lengthLong, gravity: Toast.bottom);
+                  Provider.of<GalleryProvider>(context, listen: false)
+                      .addImagetoFav(imgFile.path);
                 },
-                child: const Icon(Icons.favorite)),
+                child: Icon(
+                  Icons.favorite,
+                  color: box.values.contains(imgFile.path)
+                      ? Colors.red
+                      : Colors.white,
+                )),
             InkWell(
                 onTap: () {
-                  // Provider.of<GalleryProvider>(context, listen: false)
                   //     .removeImageFromHive(__.currentImage!);
                   CommonDialog().showAlert(context, 'Delete',
                       'Do you really want to delete this Image !? ',
@@ -51,12 +58,14 @@ class BottomSheetWidget extends StatelessWidget {
                     Navigator.pop(context);
                     Navigator.pop(context);
                   }, oKonTap: () {
+                    Provider.of<GalleryProvider>(context, listen: false)
+                        .deleteImage(imgFile, __.currentImage!);
                     // Provider.of<GalleryProvider>(context, listen: false)
                     //     .removeImageFromHive(__.currentImage!);
                     // appToast(context, 'image deleted :)');
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   });
                 },
                 child: const Icon(Icons.delete)),

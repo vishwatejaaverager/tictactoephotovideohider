@@ -5,6 +5,7 @@ import 'package:my_project_first/utils/app_theme.dart';
 import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../../gallery/screens/favourite_screen.dart';
 import '../components/settings_heading_widget.dart';
 import '../components/settings_tile_widget.dart';
 
@@ -33,7 +34,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Consumer<SettingsProvider>(
       builder: (_, __, ___) {
         return SafeArea(
@@ -71,7 +71,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           text: "favrouties",
                           icon: const Icon(Icons.heart_broken),
                           onpressed: () {
-                            appToast(context, "will be implemented soon");
+                            Navigator.pushNamed(
+                                context, FavouriteImageScreen.id);
                           },
                         ),
                         sbh(16),

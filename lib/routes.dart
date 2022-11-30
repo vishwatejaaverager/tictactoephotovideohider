@@ -1,4 +1,5 @@
 class Routes {
+  static const String favScreen = 'fav_screen';
   static const String ticTacToeScreen = 'tic_tac_toe';
   static const String settingsScreen = 'settings_screen';
   static const String vaultScreen = 'vault_screen';

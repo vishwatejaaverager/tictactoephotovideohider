@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:random_string_generator/random_string_generator.dart';
+import 'package:share_plus/share_plus.dart';
 
 class GalleryProvider with ChangeNotifier {
   //final List<XFile> _sharableImages = [];
@@ -13,11 +14,23 @@ class GalleryProvider with ChangeNotifier {
   final bool _isSharing = false;
   bool get isSharing => _isSharing;
 
+  bool _isFavImage = false;
+  bool get isFavImage => _isFavImage;
+
   List<dynamic> _imagePaths = [];
   List<dynamic> get imagePaths => _imagePaths;
 
-  final String _pickHiveBox = 'image-box';
+  List<dynamic> _favImagePaths = [];
+  List<dynamic> get favImagePaths => _favImagePaths;
+
+  final String _favHiveBox = 'fav-path-box';
+  String get favHiveBox => _favHiveBox;
+
+  final String _pickHiveBox = 'image-path-box';
   String get pickHiveBox => _pickHiveBox;
+
+  final String _fileName = 'voila';
+  String get fileName => _fileName;
 
   List<XFile> _selectedImages = [];
   List<XFile>? get selectedImages => _selectedImages;
@@ -25,8 +38,12 @@ class GalleryProvider with ChangeNotifier {
   int? _currentImage;
   int? get currentImage => _currentImage;
 
+  int? _favCurrentImage;
+  int? get favCurrentImage => _favCurrentImage;
+
   setCurrentImage(int s) {
     _currentImage = s;
+    _favCurrentImage = s;
     log('${_currentImage}this is current image ');
     notifyListeners();
   }
@@ -65,6 +82,39 @@ class GalleryProvider with ChangeNotifier {
   //   }
   // }
 
+  shareImage(File file) async {
+    try {
+      final directory = await getTemporaryDirectory();
+      String path = directory.path;
+      log('$path this is the path');
+      Uint8List b = await file.readAsBytes();
+      File c = await File(file.path).writeAsBytes(b);
+      var g = RandomStringGenerator(fixedLength: 5);
+      String h = g.generate();
+      final File newim = await c.copy('$path/$h.jpg');
+      XFile files = XFile(newim.path);
+      await Share.shareXFiles([files]);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  deleteImage(File file, int id) async {
+    try {
+      //
+
+      var a = await file.delete();
+      if (!await a.exists()) {
+        Box box = await Hive.openBox<String>(pickHiveBox);
+        box.deleteAt(id);
+        getImagesFromFile();
+        log("deleted from hive");
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   // pickMultipleImages() async {
   //   final ImagePicker picker = ImagePicker();
   //   try {
@@ -89,14 +139,67 @@ class GalleryProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
+  addImagetoFav(String path) async {
+    await checkIfExistsInFav(path);
+    Box box = await Hive.openBox<String>(favHiveBox);
+    if (!_isFavImage) {
+      box.add(path);
+      _favImagePaths = box.values.toList();
+      log("added to fav");
+      _isFavImage = true;
+    } else {
+      for (var element in box.values) {
+        var i = 0;
+        i++;
+        if (element == path) {
+          box.deleteAt(i - 1);
+          _isFavImage = false;
+          log("deleted at fav");
+        }
+      }
+    }
+    log(_isFavImage.toString());
+    notifyListeners();
+    //var a = box.values.firstWhere((element) => element == path);
+    // log(a.toString());
+  }
+
+  // removeFromFav(int id, String path) async {
+  //   await checkIfExistsInFav(path);
+  //   Box box = await Hive.openBox<String>(favHiveBox);
+  //   if (!_isFavImage) {
+  //     box.deleteAt(id);
+  //     _favImagePaths = box.values.toList();
+  //     log("removed from fav");
+  //     notifyListeners();
+  //   } else {
+  //     box.add(path);
+  //     _favImagePaths = box.values.toList();
+  //     log("added to fav ");
+  //   }
+  // }
+
+  // Future<bool> check(String path) async {
+  //   Box box = await Hive.openBox<String>(favHiveBox);
+  //   bool a = box.values.contains(path);
+  //   return a;
+  // }
+
+  checkIfExistsInFav(String path) async {
+    Box box = await Hive.openBox<String>(favHiveBox);
+    _isFavImage = box.values.contains(path);
+    notifyListeners();
+  }
+
   saveImagesInFiles() async {
     _selectedImages = [];
     try {
+      //gets app dir
+
       Directory? dir = await getExternalStorageDirectory();
-      Box box = await Hive.openBox<String>('new-box');
+      Box box = await Hive.openBox<String>(pickHiveBox); //hive box
       log(dir!.path.toString());
-      String filename = 'images';
-      final imagesPath = Directory('${dir.path}/$filename');
+      final imagesPath = Directory('${dir.path}/$_fileName');
       bool a = await imagesPath.exists();
       log(imagesPath.path.toString());
       if (a) {
@@ -120,11 +223,37 @@ class GalleryProvider with ChangeNotifier {
       }
       _imagePaths = box.values.toList();
       log('${_imagePaths.length}this is the log');
+
       notifyListeners();
     } catch (e) {
       log(e.toString());
     }
   }
+
+  getImagesFromFile() async {
+    Box box = await Hive.openBox<String>(pickHiveBox);
+    _imagePaths = box.values.toList();
+    notifyListeners();
+    //hive box
+  }
+
+  getFavImagesFromFile() async {
+    Box box = await Hive.openBox<String>(favHiveBox);
+    _favImagePaths = box.values.toList();
+    notifyListeners();
+  }
+
+  // Future<bool> requestPermission(Permission permission) async {
+  //   if (await permission.isGranted) {
+  //     return true;
+  //   } else {
+  //     var result = await permission.request();
+  //     if (result == PermissionStatus.granted) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   // saveImagesInHiveDb() async {
   //   final ImagePicker picker = ImagePicker();

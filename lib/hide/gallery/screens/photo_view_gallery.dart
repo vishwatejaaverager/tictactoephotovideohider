@@ -28,6 +28,7 @@ class PhotoGallerView extends StatelessWidget {
               pageController: pageController,
               onPageChanged: (index) {
                 __.setCurrentImage(index);
+                
               },
               itemCount: itemCount,
               builder: ((context, index) {
@@ -39,7 +40,7 @@ class PhotoGallerView extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return BottomSheetWidget(
-                            imageModell: img,
+                            imgFile: img,
                           );
                         },
                       );

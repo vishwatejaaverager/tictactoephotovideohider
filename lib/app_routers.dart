@@ -8,6 +8,7 @@ import 'package:my_project_first/on_boarding/screens/on_boarding_screen.dart';
 import 'package:my_project_first/tic_tac_toe/screens/tic_tac_toe_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
+import 'hide/gallery/screens/favourite_screen.dart';
 import 'hide/lock_screen/screens/lock_setting_screen.dart';
 
 class AppRouter {
@@ -15,6 +16,8 @@ class AppRouter {
     const PageTransitionType style = PageTransitionType.fade;
 
     switch (route.name) {
+      case FavouriteImageScreen.id:
+        return PageTransition(child: const FavouriteImageScreen(), type: style);
       case TictactoeScreen.id:
         return PageTransition(child: const TictactoeScreen(), type: style);
       case OnBoardingScreen.id:

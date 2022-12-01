@@ -99,14 +99,29 @@ class GalleryProvider with ChangeNotifier {
     }
   }
 
-  deleteImage(File file, int id) async {
+  deleteImage(File file,) async {
     try {
-      //
-
       var a = await file.delete();
       if (!await a.exists()) {
         Box box = await Hive.openBox<String>(pickHiveBox);
-        box.deleteAt(id);
+        Box favBox = await Hive.openBox<String>(favHiveBox);
+        for (var element in box.values) {
+          var i = 0;
+          i++;
+          if (element == file.path) {
+            box.deleteAt(i - 1);
+          }
+        }
+        for (var element in favBox.values) {
+          var i = 0;
+          i++;
+          if (element == file.path) {
+            favBox.deleteAt(i - 1);
+            _isFavImage = false;
+            log("deleted at fav");
+            getFavImagesFromFile();
+          }
+        }
         getImagesFromFile();
         log("deleted from hive");
       }

@@ -286,8 +286,8 @@ class TicTacToeProvider with ChangeNotifier {
     } else if (filledBoxes == 9) {
       CommonDialog().showAlert(
         context,
-        _tictac[0],
-        "Has won the game  :)",
+        "Draw :)",
+        "",
         oKonTap: () {
           _clearBoard();
           Navigator.pop(context);

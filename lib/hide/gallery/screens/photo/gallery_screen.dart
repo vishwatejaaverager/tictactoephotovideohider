@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:my_project_first/hide/gallery/screens/photo_view_gallery.dart';
+import 'package:my_project_first/hide/gallery/screens/photo/photo_view_gallery.dart';
 import 'package:my_project_first/hide/providers/gallery_provider.dart';
 import 'package:provider/provider.dart';
 

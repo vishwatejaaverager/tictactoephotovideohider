@@ -7,8 +7,13 @@ import 'package:my_project_first/utils/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import 'hide/providers/video_provider.dart';
+
 List<SingleChildWidget> generalProviders = [
 
+  ChangeNotifierProvider<VideoProvider>(
+    create: (_) => VideoProvider(),
+  ),
   
   ChangeNotifierProvider<LockScreenProvider>(
     create: (_) => LockScreenProvider(),

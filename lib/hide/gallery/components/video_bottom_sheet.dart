@@ -1,26 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:my_project_first/hide/providers/gallery_provider.dart';
-import 'package:my_project_first/utils/dialog.dart';
+import 'package:my_project_first/hide/providers/video_provider.dart';
 import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-import '../../../boxes.dart';
+import '../../../utils/dialog.dart';
 
-class BottomSheetWidget extends StatelessWidget {
+class VideoBottomSheet extends StatelessWidget {
   final File imgFile;
-  const BottomSheetWidget({
-    Key? key,
-    required this.imgFile,
-  }) : super(key: key);
+  const VideoBottomSheet({super.key, required this.imgFile});
 
   @override
   Widget build(BuildContext context) {
-    final box = Boxes.getFavs;
     ToastContext().init(context);
-
     return Container(
       height: size.height / 9,
       color: Colors.black,
@@ -29,24 +23,9 @@ class BottomSheetWidget extends StatelessWidget {
         children: [
           InkWell(
               onTap: () {
-                Provider.of<GalleryProvider>(context, listen: false)
-                    .shareImage(imgFile);
-                //         .shareImage();
+                //share video
               },
               child: const Icon(Icons.share)),
-          Consumer<GalleryProvider>(builder: ((context, value, child) {
-            return InkWell(
-                onTap: () {
-                  Provider.of<GalleryProvider>(context, listen: false)
-                      .addImagetoFav(imgFile.path);
-                },
-                child: Icon(
-                  Icons.favorite,
-                  color: box.values.contains(imgFile.path)
-                      ? Colors.red
-                      : Colors.white,
-                ));
-          })),
           InkWell(
               onTap: () {
                 //     .removeImageFromHive(__.currentImage!);
@@ -59,11 +38,8 @@ class BottomSheetWidget extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }, oKonTap: () {
-                  Provider.of<GalleryProvider>(context, listen: false)
-                      .deleteImage(imgFile);
-                  // Provider.of<GalleryProvider>(context, listen: false)
-                  //     .removeImageFromHive(__.currentImage!);
-                  // appToast(context, 'image deleted :)');
+                  Provider.of<VideoProvider>(context, listen: false)
+                      .deleteVideo(imgFile);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);

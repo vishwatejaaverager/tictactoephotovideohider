@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_first/hide/gallery/screens/gallery_screen.dart';
+import 'package:my_project_first/hide/gallery/screens/photo/gallery_screen.dart';
+import 'package:my_project_first/hide/gallery/screens/video/video_gallery_screen.dart';
 import 'package:my_project_first/routes.dart';
 
 import '../../../preferences/preferences.dart';
@@ -62,9 +63,7 @@ class _VaultScreenState extends State<VaultScreen> {
         body: const TabBarView(
           children: <Widget>[
             GalleryScreen(),
-            Center(
-              child: Text("Will be available soon :) "),
-            ),
+            VideoScreen(),
           ],
         ),
       ),

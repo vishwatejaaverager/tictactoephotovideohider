@@ -5,7 +5,7 @@ import 'package:my_project_first/utils/app_theme.dart';
 import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-import '../../gallery/screens/favourite_screen.dart';
+import '../../gallery/screens/photo/favourite_screen.dart';
 import '../components/settings_heading_widget.dart';
 import '../components/settings_tile_widget.dart';
 

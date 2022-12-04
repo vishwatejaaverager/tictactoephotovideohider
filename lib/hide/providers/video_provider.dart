@@ -2,41 +2,48 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:my_project_first/boxes.dart';
+import 'package:my_project_first/model/videos/video_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:random_string_generator/random_string_generator.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class VideoProvider with ChangeNotifier {
   //actuall images of videos and videos
-  List<dynamic> _videoThumbImage = [];
-  List<dynamic> get videoThumbImage => _videoThumbImage;
+  final videoBox = Boxes.getVideoModelBox();
+  // List<dynamic> _videoThumbImage = [];
+  // List<dynamic> get videoThumbImage => _videoThumbImage;
 
-  List<dynamic> _actualVids = [];
-  List<dynamic> get actualVids => _actualVids;
+  // List<dynamic> _actualVids = [];
+  // List<dynamic> get actualVids => _actualVids;
 
-  List<dynamic> _favVids = [];
-  List<dynamic> get favVids => _favVids;
+  // List<dynamic> _favVids = [];
+  // List<dynamic> get favVids => _favVids;
 
-  List<dynamic> _favThub = [];
-  List<dynamic> get favThumb => _favThub;
+  // List<dynamic> _favThub = [];
+  // List<dynamic> get favThumb => _favThub;
+
+  List<VideoModel> _videoModelVids = [];
+  List<VideoModel> get videoModelVids => _videoModelVids;
 
   //contains all the present picked videos
   List<File> _videoFiles = [];
   List<File> get videoFiles => _videoFiles;
 
   //vidos box names hive
-  final String _thumbNailbox = 'thumb-box';
-  String get thumbNailBox => _thumbNailbox;
+  // final String _thumbNailbox = 'thumb-box';
+  // String get thumbNailBox => _thumbNailbox;
 
-  final String _videoPathbox = 'video-path-box';
-  String get videoPathbox => _videoPathbox;
+  // final String _videoPathbox = 'video-path-box';
+  // String get videoPathbox => _videoPathbox;
 
-  final String _favPathbox = 'fav-path-box';
-  String get favPathBox => _favPathbox;
+  // final String _favPathbox = 'fav-path-box';
+  // String get favPathBox => _favPathbox;
 
-  final String _favThumbBox = 'fav-thumb-box';
-  String get favThumbBox => _favThumbBox;
+  // final String _favThumbBox = 'fav-thumb-box';
+  // String get favThumbBox => _favThumbBox;
 
   //file names in file manager
   final String _videoFileName = 'videos_images';
@@ -45,7 +52,7 @@ class VideoProvider with ChangeNotifier {
   final String _videos = 'videos';
   String get videos => _videos;
 
-  bool _isFavVid = false;
+  final bool _isFavVid = false;
   bool get isFavVid => _isFavVid;
 
   // pickMultipleVideo() async {
@@ -64,22 +71,42 @@ class VideoProvider with ChangeNotifier {
   //   }
   // }
 
+  shareVideo(File file) async {
+    try {
+      final directory = await getTemporaryDirectory();
+      String path = directory.path;
+      var g = RandomStringGenerator(fixedLength: 5);
+      String h = g.generate();
+      var a = await file.copy('$path/$h.mp4');
+      XFile xFile = XFile(a.path);
+      await Share.shareXFiles([xFile]);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   deleteVideo(File file) async {
     try {
       var a = await file.delete();
       if (!await a.exists()) {
         //Box box = await Hive.openBox<String>(_favPathbox);
-        Box vidthumbBox = await Hive.openBox<String>(_thumbNailbox);
-       // Box thumbBox = await Hive.openBox<String>(_favThumbBox);
-        Box vidBox = await Hive.openBox<String>(_videoPathbox);
-        for (var element in vidBox.values) {
-          var i = 0;
-          i++;
-          if (element == file.path) {
-            vidBox.deleteAt(i - 1);
-            vidthumbBox.deleteAt(i - 1);
+        // Box vidthumbBox = await Hive.openBox<String>(_thumbNailbox);
+        // // Box thumbBox = await Hive.openBox<String>(_favThumbBox);
+        // Box vidBox = await Hive.openBox<String>(_videoPathbox);
+
+        for (final key in videoBox.keys) {
+          if (videoBox.get(key)!.videoPath == file.path) {
+            videoBox.delete(key);
           }
         }
+        // for (var element in vidBox.values) {
+        //   var i = 0;
+        //   i++;
+        //   if (element == file.path) {
+        //     vidBox.deleteAt(i - 1);
+        //     vidthumbBox.deleteAt(i - 1);
+        //   }
+        // }
         // for (var element in box.values) {
         //   var i = 0;
         //   i++;
@@ -134,8 +161,8 @@ class VideoProvider with ChangeNotifier {
   // }
 
   checkVideoInFav(path) async {
-    Box box = await Hive.openBox<String>(_favPathbox);
-    _isFavVid = box.values.contains(path);
+    //Box box = await Hive.openBox<String>(_favPathbox);
+    //_isFavVid = box.values.contains(path);
     notifyListeners();
   }
 
@@ -143,8 +170,8 @@ class VideoProvider with ChangeNotifier {
     _videoFiles = [];
     try {
       Directory? dir = await getExternalStorageDirectory();
-      Box thumbBox = await Hive.openBox<String>(_thumbNailbox);
-      Box videoBoxPath = await Hive.openBox<String>(_videoPathbox);
+      //Box thumbBox = await Hive.openBox<String>(_thumbNailbox);
+      //Box videoBoxPath = await Hive.openBox<String>(_videoPathbox);
       log(dir!.path.toString());
       final videosImagesPath = Directory('${dir.path}/$_videoFileName');
       final videos = Directory('${dir.path}/$_videos');
@@ -174,8 +201,11 @@ class VideoProvider with ChangeNotifier {
             log(t);
             saveImage.writeAsBytes(videoImage!);
             i.copy(saveVideo.path);
-            thumbBox.add(saveImage.path);
-            videoBoxPath.add(saveVideo.path);
+            VideoModel videoModel = VideoModel(
+                videoPath: saveVideo.path, videoPicPath: saveImage.path);
+            videoBox.add(videoModel);
+            // thumbBox.add(saveImage.path);
+            // videoBoxPath.add(saveVideo.path);
             log("${saveVideo.path} video path");
             log("${saveImage.path} image path");
             getVideoFilesFromHive();
@@ -193,18 +223,19 @@ class VideoProvider with ChangeNotifier {
 
   getVideoFilesFromHive() async {
     log("called get vids");
-    Box thumbBox = await Hive.openBox<String>(_thumbNailbox);
-    Box videoBoxPath = await Hive.openBox<String>(_videoPathbox);
-    _videoThumbImage = thumbBox.values.toList();
-    _actualVids = videoBoxPath.values.toList();
+    // Box thumbBox = await Hive.openBox<String>(_thumbNailbox);
+    // Box videoBoxPath = await Hive.openBox<String>(_videoPathbox);
+    // _videoThumbImage = thumbBox.values.toList();
+    // _actualVids = videoBoxPath.values.toList();
+    _videoModelVids = videoBox.values.toList();
     notifyListeners();
-    log(_videoThumbImage.toString());
-    log(_actualVids.toString());
+    log(_videoModelVids.length.toString());
   }
 
-  getFavVidsFromHive() async {
-    Box box = await Hive.openBox<String>(_favPathbox);
-    _favVids = box.values.toList();
-    notifyListeners();
-  }
+  // getFavVidsFromHive() async {
+  //   Box box = await Hive.openBox<String>(_favPathbox);
+  //   _favVids = box.values.toList();
+  //   notifyListeners();
+  // }
+
 }

@@ -1,24 +1,30 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:my_project_first/hide/providers/gallery_provider.dart';
-import 'package:my_project_first/utils/dialog.dart';
-import 'package:my_project_first/utils/utils.dart';
+import 'package:my_project_first/boxes.dart';
+import 'package:my_project_first/model/image/image_model.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../../boxes.dart';
+import '../../../utils/dialog.dart';
+import '../../../utils/utils.dart';
+import '../../providers/gallery_provider.dart';
 
 class BottomSheetWidget extends StatelessWidget {
   final File imgFile;
+  final ImageModel imageModel;
+  final int index;
   const BottomSheetWidget({
     Key? key,
     required this.imgFile,
+    required this.imageModel,
+    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final box = Boxes.getFavs;
+    //final box = Boxes.getFavs;
     ToastContext().init(context);
 
     return Container(
@@ -34,19 +40,24 @@ class BottomSheetWidget extends StatelessWidget {
                 //         .shareImage();
               },
               child: const Icon(Icons.share)),
-          Consumer<GalleryProvider>(builder: ((context, value, child) {
-            return InkWell(
-                onTap: () {
-                  Provider.of<GalleryProvider>(context, listen: false)
-                      .addImagetoFav(imgFile.path);
-                },
-                child: Icon(
-                  Icons.favorite,
-                  color: box.values.contains(imgFile.path)
-                      ? Colors.red
-                      : Colors.white,
-                ));
-          })),
+          ValueListenableBuilder(
+              valueListenable: Boxes.getImageModelBox().listenable(),
+              builder: ((context, value, child) {
+                var a = value.values.toList();
+                var b = a[index];
+                return InkWell(
+                    onTap: () {
+                      b.isFav
+                          ? Provider.of<GalleryProvider>(context, listen: false)
+                              .removeFav(imgFile.path)
+                          : Provider.of<GalleryProvider>(context, listen: false)
+                              .addFav(imgFile.path);
+                    },
+                    child: Icon(
+                      Icons.favorite,
+                      color: b.isFav ? Colors.red : Colors.white,
+                    ));
+              })),
           InkWell(
               onTap: () {
                 //     .removeImageFromHive(__.currentImage!);
@@ -54,16 +65,13 @@ class BottomSheetWidget extends StatelessWidget {
                     'Do you really want to delete this Image !? ',
                     button: 'Delete',
                     sideButton: 'No',
-                    dismiss: true,
+                    dismiss: true,  
                     show: true, resetOnTap: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }, oKonTap: () {
                   Provider.of<GalleryProvider>(context, listen: false)
                       .deleteImage(imgFile);
-                  // Provider.of<GalleryProvider>(context, listen: false)
-                  //     .removeImageFromHive(__.currentImage!);
-                  // appToast(context, 'image deleted :)');
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);

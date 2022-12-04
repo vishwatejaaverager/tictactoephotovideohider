@@ -23,7 +23,8 @@ class VideoBottomSheet extends StatelessWidget {
         children: [
           InkWell(
               onTap: () {
-                //share video
+                Provider.of<VideoProvider>(context, listen: false)
+                    .shareVideo(imgFile);
               },
               child: const Icon(Icons.share)),
           InkWell(

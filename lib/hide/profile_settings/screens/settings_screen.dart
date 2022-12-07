@@ -41,6 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   InkWell(
                     onTap: (() => Navigator.pop(context)),
@@ -68,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SettingsTileWidget(
-                          text: "favrouties",
+                          text: "favourites",
                           icon: const Icon(Icons.heart_broken),
                           onpressed: () {
                             Navigator.pushNamed(
@@ -125,8 +126,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Navigator.pushNamed(
                                 context, Routes.lockScreenSetting);
                           },
-                        )
+                        ),
+                       
+
                       ],
+                    ),
+                  ),
+                   const SettingHeadingTile(
+                    text: "About",
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: SettingsTileWidget(
+                      text: "About us",
+                      icon: const Icon(Icons.person),
+                      onpressed: () {
+                        Navigator.pushNamed(context, Routes.aboutUs);
+                      },
                     ),
                   ),
                 ],

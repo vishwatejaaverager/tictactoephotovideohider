@@ -2,13 +2,16 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:my_project_first/boxes.dart';
 import 'package:my_project_first/model/videos/video_model.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:random_string_generator/random_string_generator.dart';
+import 'package:random_string/random_string.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../../main.dart';
+import '../../utils/colors.dart';
 
 class VideoProvider with ChangeNotifier {
   //actuall images of videos and videos
@@ -75,8 +78,8 @@ class VideoProvider with ChangeNotifier {
     try {
       final directory = await getTemporaryDirectory();
       String path = directory.path;
-      var g = RandomStringGenerator(fixedLength: 5);
-      String h = g.generate();
+      //var g = RandomStringGenerator(fixedLength: 5);
+      var h = randomString(3);
       var a = await file.copy('$path/$h.mp4');
       XFile xFile = XFile(a.path);
       await Share.shareXFiles([xFile]);
@@ -167,7 +170,7 @@ class VideoProvider with ChangeNotifier {
   }
 
   storeThumnailsofVideos() async {
-    _videoFiles = [];
+    _videoFiles.clear();
     try {
       Directory? dir = await getExternalStorageDirectory();
       //Box thumbBox = await Hive.openBox<String>(_thumbNailbox);
@@ -184,17 +187,17 @@ class VideoProvider with ChangeNotifier {
             allowedExtensions: ['mp4']);
         List<File> files = result!.paths.map((path) => File(path!)).toList();
         _videoFiles.addAll(files);
-        if (_videoFiles.isNotEmpty) {
+        if (_videoFiles.isNotEmpty && _videoFiles.length <= 10) {
           for (File i in _videoFiles) {
             Uint8List? videoImage = await VideoThumbnail.thumbnailData(
                 video: i.path,
                 imageFormat: ImageFormat.JPEG,
                 maxWidth: 128,
                 quality: 50);
-            var g = RandomStringGenerator(fixedLength: 5);
-            var f = RandomStringGenerator(fixedLength: 4);
-            String h = g.generate();
-            String t = f.generate();
+            // var g = RandomStringGenerator(fixedLength: 5);
+            // var f = RandomStringGenerator(fixedLength: 4);
+            var h = randomString(3);
+            var t = randomString(3);
             File saveVideo = File('${videos.path}/$t');
             File saveImage = File('${videosImagesPath.path}/$h');
             log(h);
@@ -210,6 +213,23 @@ class VideoProvider with ChangeNotifier {
             log("${saveImage.path} image path");
             getVideoFilesFromHive();
           }
+        } else {
+          SnackBar snackBar = SnackBar(
+              backgroundColor: greyColor,
+              duration: const Duration(milliseconds: 2000),
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Please do select atmost 10 Videos :( ",
+                    style: TextStyle(color: whiteColor),
+                  ),
+                ],
+              ));
+          Snack.snackbarKey.currentState?.showSnackBar(
+            snackBar,
+          );
         }
       } else {
         log("creating now ");

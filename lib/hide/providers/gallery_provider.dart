@@ -7,11 +7,13 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_project_first/boxes.dart';
-import 'package:my_project_first/main.dart';
 import 'package:my_project_first/model/image/image_model.dart';
+import 'package:my_project_first/utils/colors.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:random_string_generator/random_string_generator.dart';
+import 'package:random_string/random_string.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../main.dart';
 
 class GalleryProvider with ChangeNotifier {
   //final List<XFile> _sharableImages = [];
@@ -24,7 +26,7 @@ class GalleryProvider with ChangeNotifier {
   bool _isFavImage = false;
   bool get isFavImage => _isFavImage;
 
-  List<ImageModel> _imagePaths = [];
+  final List<ImageModel> _imagePaths = [];
   List<ImageModel> get imagePaths => _imagePaths;
 
   // List<ImageModel> _favImagePaths = [];
@@ -117,8 +119,8 @@ class GalleryProvider with ChangeNotifier {
       log('$path this is the path');
       Uint8List b = await file.readAsBytes();
       File c = await File(file.path).writeAsBytes(b);
-      var g = RandomStringGenerator(fixedLength: 5);
-      String h = g.generate();
+    //  var g = RandomStringGenerator(fixedLength: 5);
+      var h = randomString(3);
       final File newim = await c.copy('$path/$h.jpg');
       XFile files = XFile(newim.path);
       await Share.shareXFiles([files]);
@@ -127,7 +129,6 @@ class GalleryProvider with ChangeNotifier {
     }
   }
 
-  
   shareMultiple(List<int> a) async {
     try {
       log("came ");
@@ -139,8 +140,8 @@ class GalleryProvider with ChangeNotifier {
         File file = File(a);
         Uint8List b = await file.readAsBytes();
         File c = await File(file.path).writeAsBytes(b);
-        var g = RandomStringGenerator(fixedLength: 5);
-        String h = g.generate();
+        var h = randomString(3);
+       // String h = g.generate();
         final File newim = await c.copy('$path/$h.jpg');
         XFile files = XFile(newim.path);
         share.add(files);
@@ -151,22 +152,28 @@ class GalleryProvider with ChangeNotifier {
     }
   }
 
-  
-
   deleteMultipleImages(List<int> a) async {
     try {
       _isDeleting = true;
       log("came");
-      for (var b in a) {
+      //List.generate(a.length, (index) => null)
+      for (int b in a) {
+        log("${b}this is in del");
         var c = imageBox.getAt(b);
+        log(c.toString());
         File file = File(c!.imagePath);
-        await file.delete().whenComplete(() {
-          _isDeleting = false;
-          SchedulerBinding.instance.addPersistentFrameCallback((timeStamp) {
-            notifyListeners();
-          });
-        });
+        file.deleteSync();
         imageBox.deleteAt(b);
+        // SchedulerBinding.instance.addPersistentFrameCallback((timeStamp) {
+        //   imageBox.deleteAt(b);
+        // });
+        // await file.delete().whenComplete(() {
+        //   _isDeleting = false;
+
+        //   // SchedulerBinding.instance.addPersistentFrameCallback((timeStamp) {
+        //   //   notifyListeners();
+        //   // });
+        // });
       }
       // getImagesFromFile();
     } catch (e) {
@@ -306,20 +313,35 @@ class GalleryProvider with ChangeNotifier {
       log(imagesPath.path.toString());
       if (a) {
         final ImagePicker picker = ImagePicker();
-        List<XFile>? images = await picker.pickMultiImage();
-        _selectedImages.addAll(images);
-        if (_selectedImages.isNotEmpty) {
-          for (XFile i in _selectedImages) {
-            Uint8List image = await i.readAsBytes();
-            var g = RandomStringGenerator(fixedLength: 5);
-            String h = g.generate();
-            File saveImage = File('${imagesPath.path}/$h');
-            log(h);
-            saveImage.writeAsBytes(image);
-            ImageModel imageModel = ImageModel(imagePath: saveImage.path);
-            imageBox.add(imageModel);
+        await picker.pickMultiImage().then((value) async {
+          _selectedImages.addAll(value);
+          if (_selectedImages.isNotEmpty && _selectedImages.length <= 10) {
+            for (XFile i in _selectedImages) {
+              Uint8List image = await i.readAsBytes();
+              var h = randomString(3);
+
+              File saveImage = File('${imagesPath.path}/$h');
+              log(h);
+              saveImage.writeAsBytes(image);
+              ImageModel imageModel = ImageModel(imagePath: saveImage.path);
+              imageBox.add(imageModel);
+            }
+          } else {
+            SnackBar snackBar = SnackBar(
+              backgroundColor: greyColor,
+                duration: const Duration(milliseconds: 2000),
+                content: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:  [
+                    Text("Please do select atmost 10 images :( ",style: TextStyle(color: whiteColor),),
+                  ],
+                ));
+            Snack.snackbarKey.currentState?.showSnackBar(
+              snackBar,
+            );
           }
-        }
+        });
       } else {
         log("creating now ");
         imagesPath.create();

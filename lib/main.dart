@@ -28,7 +28,7 @@ void main() async {
 
   runApp(DevicePreview(
       enabled: false,
-      tools: const [...DevicePreview.defaultTools],
+      tools: const [...DevicePreview.defaultTools], 
       builder: ((context) {
         return MultiProvider(
           providers: generalProviders,

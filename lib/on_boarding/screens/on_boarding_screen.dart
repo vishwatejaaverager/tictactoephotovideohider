@@ -60,7 +60,7 @@ class OnBoardingScreen extends StatelessWidget {
               height: size.height / 1.8,
             ),
             text:
-                "Make x win in first row or second row or third row\n by default 3 rows are set as hide locations 🙂",
+                "Make x win in first row or second row or third row.\n by default 3 rows are set as hide locations",
           ),
           OnBoardComponent(
             image: Image.asset(
@@ -68,14 +68,15 @@ class OnBoardingScreen extends StatelessWidget {
               height: size.height / 1.54,
             ),
             text:
-                "Normal click on ok would continue the game \n double tap on it redirect u to lockscreen 🙂",
+                "Normal click on ''ok'' would continue the game. \n Double tap on  on it will redirect u to lockscreen \n ",
           ),
           OnBoardComponent(
             image: Image.asset(
               'assets/profile/show_image3.jpg',
               height: size.height / 1.54,
             ),
-            text: "By default its 1234 you can change it in settings :)",
+            text:
+                "By default its 1234. You can change passcode in the settings :)",
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +91,7 @@ class OnBoardingScreen extends StatelessWidget {
                   width: size.width,
                   child: const Center(
                       child: Text(
-                    "The Images you save are stored in your phone storage on uninstalling the app the images will be delete.  Due to security issues the images which you hide will not dissapear from your gallery",
+                    "By Uninstalling the app will delete your images and videos.Due to security issues, the images which you hide will not dissapear from your gallery :(",
                     style: TextStyle(fontSize: 16),
                   ))),
             ],
@@ -105,7 +106,7 @@ class OnBoardingScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(16),
                   width: size.width,
                   child: const Text(
-                      "You hate Adss me too App  is completely add free :) \n No in app purchases :) open source project \n feel free to contribute :)"))
+                      "You hate Adss me too ! ;)This  App  is completely add free ! :) \n No in app purchases :) please to watch the video before u continue ! :)"))
             ],
           ),
         ],

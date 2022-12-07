@@ -9,4 +9,5 @@ class Routes {
   static const String lockScreenSetting = 'lock_screen_setting';
   static const String photoGalleryView = 'photo_gallery_view';
   static const String onBoardingScreen = 'on_Boarding_screen';
+  static const String aboutUs = 'about_us';
 }

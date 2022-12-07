@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:hive_flutter/hive_flutter.dart';
@@ -62,7 +61,6 @@ class _FavouriteImageScreenState extends State<FavouriteImageScreen> {
                                   mainAxisSpacing: 4,
                                   crossAxisSpacing: 4),
                           itemBuilder: (BuildContext context, int index) {
-                            
                             File imag = File(a[index].imagePath);
                             if (value.values.isEmpty) {
                               //log(__.favImagePaths[index].toString());
@@ -76,9 +74,10 @@ class _FavouriteImageScreenState extends State<FavouriteImageScreen> {
                                       MaterialPageRoute(
                                           builder: ((context) =>
                                               PhotoGallerView(
+                                              
                                                 imageIndex: index,
-                                                images: value.values.toList(),
-                                                itemCount: value.values.length,
+                                                images: a,
+                                                itemCount: a.length,
                                               ))));
                                 },
                                 child: SizedBox(

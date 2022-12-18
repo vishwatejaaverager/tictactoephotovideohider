@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserPreference {
   static late SharedPreferences preferences;
   static const _lock = 'lock';
+  static const _isReallySaved = 'really_saved';
   static const _val1 = 'value-one';
   static const _val2 = 'value-two';
   static const _val3 = 'value-three';
@@ -18,6 +19,11 @@ class UserPreference {
 
   static Future init() async {
     return preferences = await SharedPreferences.getInstance();
+  }
+
+  static Future setReallySaved(bool a) async {
+    await preferences.setBool(_isReallySaved, a);
+    log("it is kept");
   }
 
   static Future setLock(String s) async {
@@ -77,4 +83,5 @@ class UserPreference {
   bool? getVal8() => preferences.getBool(_val8);
   bool? getToRun() => preferences.getBool(_torun);
   bool? getRun() => preferences.getBool(_run);
+  bool getIsReallySaved() => preferences.getBool(_isReallySaved) ?? true;
 }

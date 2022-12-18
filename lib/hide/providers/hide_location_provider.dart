@@ -123,7 +123,8 @@ class HideLocationProvider with ChangeNotifier {
 
   setBoolsofSwitches(BuildContext context) async {
     bool firstRun = await IsFirstRun.isFirstRun();
-    if (firstRun) {
+    bool reallySaved =  _preference.getIsReallySaved();
+    if (firstRun || reallySaved) {
       log("called here first ");
       try {
         UserPreference.setSwitchOne(true);
@@ -136,11 +137,10 @@ class HideLocationProvider with ChangeNotifier {
         UserPreference.setSwitch8(false);
         UserPreference.setToRun(true);
         UserPreference.setRun(false);
+        UserPreference.setReallySaved(false);
         set1(true);
         set2(true);
         set3(true);
-       
-       
 
         log("setted");
       } catch (e) {
@@ -387,11 +387,9 @@ class HideLocationProvider with ChangeNotifier {
   setHideLocation6(bool v) {
     _hideLocation6 = v;
     if (_hideLocation6) {
-      
       setSwitch7(v);
       _maxLimit++;
     } else {
-    
       setSwitch7(v);
       _maxLimit--;
     }
@@ -406,7 +404,7 @@ class HideLocationProvider with ChangeNotifier {
       // _hideList[4] = '8';
       // _hideList[8] = '8';
       setSwitch8(v);
-    
+
       _maxLimit++;
     } else {
       // _hideList[0] = '0';
@@ -425,7 +423,6 @@ class HideLocationProvider with ChangeNotifier {
     log("called");
     log(_maxLimit.toString());
     if (_maxLimit == 0) {
-    
       const SnackBar snackBar =
           SnackBar(content: Text("atleast set in one location "));
       Snack.snackbarKey.currentState?.showSnackBar(snackBar);

@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bubble_showcase:
+    dependency: "direct main"
+    description:
+      name: bubble_showcase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   build:
     dependency: transitive
     description:
@@ -270,13 +277,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.0.0+1"
-  flutter_staggered_grid_view:
+  flutter_spinkit:
     dependency: "direct main"
     description:
-      name: flutter_staggered_grid_view
+      name: flutter_spinkit
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.2"
+    version: "5.1.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -658,13 +665,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  random_string_generator:
+  random_string:
     dependency: "direct main"
     description:
-      name: random_string_generator
+      name: random_string
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.3.1"
   share_plus:
     dependency: "direct main"
     description:
@@ -749,6 +756,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  showcaseview:
+    dependency: "direct main"
+    description:
+      name: showcaseview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+1"
   sizer:
     dependency: "direct main"
     description:
@@ -852,10 +866,38 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
+  url_launcher:
+    dependency: "direct main"
+    description:
+      name: url_launcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.1.7"
+  url_launcher_android:
+    dependency: transitive
+    description:
+      name: url_launcher_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.22"
+  url_launcher_ios:
+    dependency: transitive
+    description:
+      name: url_launcher_ios
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.17"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
+  url_launcher_macos:
+    dependency: transitive
+    description:
+      name: url_launcher_macos
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"

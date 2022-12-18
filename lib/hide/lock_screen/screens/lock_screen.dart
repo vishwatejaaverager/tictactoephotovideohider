@@ -21,8 +21,8 @@ class _LockScreenState extends State<LockScreen> {
           decoration: const BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1623353840260-4f90f159c65c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+                  image: AssetImage(
+                    'assets/profile/lock.jpg',
                   ))),
           child: Consumer<LockScreenProvider>(
             builder: (context, value, child) {

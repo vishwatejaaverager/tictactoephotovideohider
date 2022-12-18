@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:is_first_run/is_first_run.dart';
 import 'package:my_project_first/hide/lock_screen/screens/lock_screen.dart';
 import 'package:my_project_first/hide/providers/hide_location_provider.dart';
 import 'package:my_project_first/utils/dialog.dart';
@@ -10,11 +12,30 @@ class TicTacToeProvider with ChangeNotifier {
   final bool _isXturn = true;
   bool get isXturn => _isXturn;
 
+  bool _isFirstRunv = false;
+  bool get isFirstRun => _isFirstRunv;
+
   bool _isOturn = true;
   bool get isOturn => _isOturn;
 
   int _filledBoxes = 0;
   int get filledBoxes => _filledBoxes;
+
+  String _showCaseText = 'X';
+  String get showCaseText => _showCaseText;
+
+  setShowCaseText(String s) {
+    _showCaseText = s;
+    notifyListeners();
+  }
+
+  Future<bool> isFirstRunl() async {
+    log("came to run");
+    bool isFirst = await IsFirstRun.isFirstRun();
+    _isFirstRunv = isFirst;
+    log(isFirst.toString());
+    return isFirst;
+  }
 
   // ignore: prefer_final_fields
   //  List _hideListTictac = [

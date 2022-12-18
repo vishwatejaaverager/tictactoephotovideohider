@@ -5,6 +5,7 @@ import 'package:my_project_first/hide/hide_location_settings/screens/hide_locati
 import 'package:my_project_first/hide/lock_screen/screens/lock_screen.dart';
 import 'package:my_project_first/hide/profile_settings/screens/settings_screen.dart';
 import 'package:my_project_first/on_boarding/screens/on_boarding_screen.dart';
+import 'package:my_project_first/splash_screen.dart';
 import 'package:my_project_first/tic_tac_toe/screens/tic_tac_toe_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -17,6 +18,8 @@ class AppRouter {
     const PageTransitionType style = PageTransitionType.fade;
 
     switch (route.name) {
+      case SplashScreen.id:
+        return PageTransition(child: const SplashScreen(), type: style);
 
       case AboutScreen.id:
         return PageTransition(child: const AboutScreen(), type: style);

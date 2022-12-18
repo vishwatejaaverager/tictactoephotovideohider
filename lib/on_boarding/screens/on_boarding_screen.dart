@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:gif_view/gif_view.dart';
 import 'package:my_project_first/routes.dart';
+import 'package:my_project_first/splash_screen.dart';
 import 'package:my_project_first/tic_tac_toe/screens/tic_tac_toe_screen.dart';
 
 import 'package:my_project_first/utils/utils.dart';
@@ -22,7 +23,7 @@ class OnBoardingScreen extends StatelessWidget {
         trailing: const Text(''),
         onFinish: () {
           Navigator.pushNamedAndRemoveUntil(
-              context, TictactoeScreen.id, (route) => false);
+              context, SplashScreen.id, (route) => false);
         },
         speed: 1.8,
         background: [

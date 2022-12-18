@@ -9,6 +9,7 @@ import 'package:my_project_first/model/videos/video_model.dart';
 
 import 'package:my_project_first/on_boarding/screens/on_boarding_screen.dart';
 import 'package:my_project_first/preferences/preferences.dart';
+import 'package:my_project_first/splash_screen.dart';
 import 'package:my_project_first/tic_tac_toe/screens/tic_tac_toe_screen.dart';
 import 'package:my_project_first/utils/app_theme.dart';
 
@@ -18,6 +19,7 @@ import 'package:sizer/sizer.dart';
 //late ObjectBox objectBox;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
 
   await UserPreference.init();
@@ -28,7 +30,7 @@ void main() async {
 
   runApp(DevicePreview(
       enabled: false,
-      tools: const [...DevicePreview.defaultTools], 
+      tools: const [...DevicePreview.defaultTools],
       builder: ((context) {
         return MultiProvider(
           providers: generalProviders,
@@ -48,15 +50,15 @@ class MyApp extends StatelessWidget {
     final theme = Provider.of<ThemeProvider>(context, listen: true);
     return Sizer(builder: ((context, orientation, deviceType) {
       return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        onGenerateRoute: AppRouter.generateRoute,
-        scaffoldMessengerKey: Snack.snackbarKey,
-        themeMode: theme.themeMode,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        home: !a ? const OnBoardingScreen() : const TictactoeScreen(),
-      );
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          onGenerateRoute: AppRouter.generateRoute,
+          scaffoldMessengerKey: Snack.snackbarKey,
+          navigatorKey: Snack.navigatorKey,
+          themeMode: theme.themeMode,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          home: !a ? const OnBoardingScreen() : const SplashScreen());
     }));
   }
 }
@@ -64,6 +66,8 @@ class MyApp extends StatelessWidget {
 class Snack {
   static final GlobalKey<ScaffoldMessengerState> snackbarKey =
       GlobalKey<ScaffoldMessengerState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
   run() async {
     bool a = await IsFirstRun.isFirstRun();
     return a;

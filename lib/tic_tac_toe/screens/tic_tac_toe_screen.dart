@@ -1,14 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:my_project_first/hide/providers/hide_location_provider.dart';
-import 'package:my_project_first/hide/providers/lock_screen_provider.dart';
-import 'package:my_project_first/preferences/preferences.dart';
 import 'package:my_project_first/tic_tac_toe/providers/tic_tac_toe_provider.dart';
 import 'package:my_project_first/utils/colors.dart';
 import 'package:my_project_first/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
+import '../../preferences/preferences.dart';
 import '../../routes.dart';
 
 class TictactoeScreen extends StatefulWidget {
@@ -21,12 +19,17 @@ class TictactoeScreen extends StatefulWidget {
 
 class _TictactoeScreenState extends State<TictactoeScreen> {
   late HideLocationProvider hideLocationProvider;
-  late TicTacToeProvider tacToeProvider;
-  late LockScreenProvider lockScreenProvider;
-  List? hideLocation;
+  final keyOne = GlobalKey();
+  final keyTwo = GlobalKey();
+  final keyThree = GlobalKey();
+  final keyFour = GlobalKey();
   UserPreference preference = UserPreference();
-  bool? torun;
-  late bool? run;
+  // late TicTacToeProvider tacToeProvider;
+  // late LockScreenProvider lockScreenProvider;
+  // List? hideLocation;
+  // UserPreference preference = UserPreference();
+  // bool? torun;
+  // late bool? run;
 
   // @override
   // void dispose() {
@@ -34,32 +37,48 @@ class _TictactoeScreenState extends State<TictactoeScreen> {
   //   super.dispose();
   // }
 
+  // startShowCase() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+
+  //   });
+  // }
+
   @override
   void initState() {
     hideLocationProvider =
         Provider.of<HideLocationProvider>(context, listen: false);
-    tacToeProvider = Provider.of<TicTacToeProvider>(context, listen: false);
-    lockScreenProvider =
-        Provider.of<LockScreenProvider>(context, listen: false);
-    torun = preference.getToRun();
-    run = preference.getRun();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Add Your Code here.
+    // startShowCase();
+    // ShowCaseWidget.of(context).startShowCase([_keyOne]);
+    
 
-      if (torun ?? true) {
-        hideLocationProvider.setBoolsofSwitches(context);
+    if (Provider.of<TicTacToeProvider>(context, listen: false).isFirstRun) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        ShowCaseWidget.of(context).startShowCase([keyOne,keyTwo,keyThree]);
+      });
+    }
 
-        log("its running");
-        //hideLocationProvider.getDefaultValues();
-      }
-      if (run ?? false) {
-        
-        hideLocationProvider.gethideList();
-        lockScreenProvider.getLockPass();
-      }
-      //hideLocation = hideLocationProvider.hideList;
-      //tacToeProvider.setHideListTicTac(hideLocation!);
-    });
+    // tacToeProvider = Provider.of<TicTacToeProvider>(context, listen: false);
+    // lockScreenProvider =
+    //     Provider.of<LockScreenProvider>(context, listen: false);
+    // torun = preference.getToRun();
+    // run = preference.getRun();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // Add Your Code here.
+
+    //   if (torun ?? true) {
+    //     hideLocationProvider.setBoolsofSwitches(context);
+
+    //     log("its running");
+    //     //hideLocationProvider.getDefaultValues();
+    //   }
+    //   if (run ?? false) {
+
+    //     hideLocationProvider.gethideList();
+    //     lockScreenProvider.getLockPass();
+    //   }
+    //   //hideLocation = hideLocationProvider.hideList;
+    //   //tacToeProvider.setHideListTicTac(hideLocation!);
+    // });
 
     super.initState();
   }
@@ -68,9 +87,9 @@ class _TictactoeScreenState extends State<TictactoeScreen> {
   void didChangeDependencies() {
     hideLocationProvider =
         Provider.of<HideLocationProvider>(context, listen: false);
-    tacToeProvider = Provider.of<TicTacToeProvider>(context, listen: false);
-    lockScreenProvider =
-        Provider.of<LockScreenProvider>(context, listen: false);
+    // tacToeProvider = Provider.of<TicTacToeProvider>(context, listen: false);
+    // lockScreenProvider =
+    //     Provider.of<LockScreenProvider>(context, listen: false);
 
     super.didChangeDependencies();
   }
@@ -99,24 +118,71 @@ class _TictactoeScreenState extends State<TictactoeScreen> {
                       onTap: () {
                         __.onTap(index, context, hideLocationProvider);
                       },
-                      child: Container(
-                        margin: const EdgeInsets.all(8),
-                        height: size.height / 8,
-                        width: size.width / 6,
-                        decoration: BoxDecoration(
-                            border: Border(
-                          top: BorderSide(width: 2, color: Colors.grey[800]!),
-                          right: BorderSide(width: 2, color: Colors.grey[800]!),
-                          bottom:
-                              BorderSide(width: 2, color: Colors.grey[800]!),
-                          left: BorderSide(width: 2, color: Colors.grey[800]!),
-                        )),
-                        child: Center(
-                          child: Text(
-                            __.tictac[index],
-                            style: TextStyle(color: whiteColor, fontSize: 16),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(8),
+                            height: size.height / 8,
+                            width: size.width / 6,
+                            decoration: BoxDecoration(
+                                border: Border(
+                              top: BorderSide(
+                                  width: 2, color: Colors.grey[800]!),
+                              right: BorderSide(
+                                  width: 2, color: Colors.grey[800]!),
+                              bottom: BorderSide(
+                                  width: 2, color: Colors.grey[800]!),
+                              left: BorderSide(
+                                  width: 2, color: Colors.grey[800]!),
+                            )),
+                            child: Center(
+                              child: Text(
+                                __.tictac[index],
+                                style:
+                                    TextStyle(color: whiteColor, fontSize: 16),
+                              ),
+                            ),
                           ),
-                        ),
+
+                          Visibility(
+                              visible: index == 0 && __.isFirstRun,
+                              child: Showcase(
+                                  key: keyOne,
+                                  description: "Make X win",
+                                  child: Center(child: Text(__.showCaseText)))),
+                          Visibility(
+                              visible: index == 1 && __.isFirstRun,
+                              child: Showcase(
+                                  key: keyTwo,
+                                  description: "Make X win",
+                                  child: Center(child: Text(__.showCaseText)))),
+                          Visibility(
+                              visible: index == 2 && __.isFirstRun,
+                              child: Showcase(
+                                  key: keyThree,
+                                  description: "Make X win",
+                                  child: Center(child: Text(__.showCaseText))))
+
+                          // (preference.getToRun() ?? false)
+                          //     ? Visibility(
+                          //         visible: index == 2 && preference.getToRun()!,
+                          //         child: Showcase(
+                          //             key: keyThree,
+                          //             description: "Make X win",
+                          //             child:
+                          //                 Center(child: Text(__.showCaseText))))
+                          //     : const SizedBox()
+                          // index == 0
+                          //     ? Showcase(
+                          //         key: keyOne,
+                          //         description: "description",
+                          //         child: SizedBox(
+                          //           height: size.height / 8,
+                          //           width: size.width / 6,
+                          //         ))
+                          //     : const SizedBox()
+                        ],
                       ),
                     );
                   })),
